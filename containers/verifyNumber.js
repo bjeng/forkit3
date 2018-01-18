@@ -101,20 +101,18 @@ class verifyNumber extends React.Component{
     var salt = bcrypt.genSaltSync(10);
     axios({
       method: 'POST',
-      url: 'https://guarded-dawn-44803.herokuapp.com/db/insertrows',
+      url: 'http://desolate-caverns-97737.herokuapp.com/db/insert',
       headers: {
         'Content-Type': 'application/json'
       },
       data: {
-        password: '$BIG_SHAQ102$',
-        tableName: 'users',
-        params: `{"firstname": "${this.state.first}", "lastname":"${this.state.last}","email":"${this.state.email}","password":"${this.state.password}","number":"+1${this.state.number}", "token":"${bcrypt.hashSync(this.state.email, salt)}"}`
+        password: 'forkit.co',
+        query: `insert into users(firstname, lastname, email, password, number, token) values('${this.state.first}','${this.state.last}','${this.state.email}','${this.state.password}', '+1${this.state.number}', '${bcrypt.hashSync(this.state.email, salt)}');`
       }
     })
       .then(response => {
         if (response.data.success) {
           Actions.discover();
-          // console.log(response.data)
         }
     })
       .catch(e => {
@@ -124,7 +122,7 @@ class verifyNumber extends React.Component{
 
   checkPin() {
     if (this.state.code.length === 4) {
-      var url = `https://guarded-dawn-44803.herokuapp.com/db/search?password=$BIG_SHAQ103$&tableName=pin&fields=number,code&number=+1${this.state.number}`
+      var url = `http://desolate-caverns-97737.herokuapp.com/db/query?password=forkit.co&query=select%20number,code%20from%20pin%20where%20number=%27${this.state.number}%27`
       axios.get(url)
       .then(response => {
         if (response.data.result[0].code === Number(this.state.code)) {
@@ -134,20 +132,15 @@ class verifyNumber extends React.Component{
             email: this.state.email,
             type: 'regular'
             }));
-          // Add token to database post request
-          // remove user from async AsyncStorage
-          // Add user token to AsyncStorage
-          // remove pin from database
           axios({
             method: 'POST',
-            url: 'https://guarded-dawn-44803.herokuapp.com/db/101_super_duper_secret_101',
+            url: 'http://desolate-caverns-97737.herokuapp.com/db/insert',
             headers: {
               'Content-Type': 'application/json'
             },
             data: {
-              password: '$BIG_SHAQ101$',
-              type: 'search',
-              query: `delete from pin where code=${this.state.code}`
+              password: 'forkit.co',
+              query: `delete from pin where number='${this.state.number}';`
             }
           })
           .then(response => {

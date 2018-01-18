@@ -10,7 +10,6 @@ import menuReducer from './menuReducer';
 import FormReducer from './FormReducer';
 import FriendReducer from './FriendReducer';
 import StatusReducer from './StatusReducer';
-import YelpMultiReducer from './YelpMultiReducer';
 import LastPersonReducer from './LastPersonReducer';
 import FinalMultiReducer from './FinalMultiReducer';
 

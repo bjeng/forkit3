@@ -1,8 +1,8 @@
 {
-  "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 2066,
-  "expoServerNgrokUrl": "https://ty-c76.hsaab.forkit2.exp.direct",
-  "packagerNgrokUrl": "https://packager.ty-c76.hsaab.forkit2.exp.direct",
-  "ngrokPid": 2084
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

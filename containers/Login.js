@@ -19,24 +19,17 @@ class Login extends React.Component{
   }
 
   async componentWillMount() {
-    AsyncStorage.setItem('email', JSON.stringify({
-      email: 'jin.paul7@gmail.com',
-      type: 'regular'
-      }));
     let emailObj = await AsyncStorage.getItem('email');
     let email = JSON.parse(emailObj);
     var userObj = {};
-    console.log(email);
     if (email) {
       if (email.type === 'regular') {
-        axios.get(`http://localhost:3000/db/search?password=$BIG_SHAQ103$&tableName=users&fields=id,token,email,firstname,lastname,friends,forks,wishlist,os,number&conditions=email='${email.email}'`)
+        axios.get(`http://desolate-caverns-97737.herokuapp.com/db/query?password=forkit.co&query=select%20*%20from%20users%20where%20email='${email.email}'`)
         .then(resp => {
           if (resp.data) {
             if (bcrypt.compareSync(email.email, resp.data.result[0].token)) {
-
               userObj = {firstname: resp.data.result[0].firstname, lastname: resp.data.result[0].lastname, email: resp.data.result[0].email, friends: resp.data.result[0].friends, forks: resp.data.result[0].forks, wishlist: resp.data.result[0].wishlist, os: resp.data.result[0].os, number: resp.data.result[0].number, id: resp.data.result[0].id};
               this.props.userProfile(userObj);
-              console.log("USER OBJECT", userObj)
               Actions.discover();
             }
           }
@@ -49,15 +42,12 @@ class Login extends React.Component{
           if (bcrypt.compareSync(email.email, resp.data.result[0].token)) {
             userObj = {firstname: resp.data.result[0].firstname, lastname: resp.data.result[0].lastname, email: resp.data.result[0].email, friends: resp.data.result[0].friends, forks: resp.data.result[0].forks, wishlist: resp.data.result[0].wishlist, os: resp.data.result[0].os};
             this.props.userProfile(userObj);
-            // console.log(this.props.userInformation);
             Actions.discover();
           }
-          // console.log(resp.data)
         })
         .catch(e => console.log(e))
       }
     }
-    // AsyncStorage.removeItem('email');
   }
 
   // See when the result.length is 0
@@ -66,42 +56,16 @@ class Login extends React.Component{
 
     var userObj = {};
 
-    axios.get(`https://guarded-dawn-44803.herokuapp.com/db/search?password=$BIG_SHAQ103$&tableName=users&fields=email,password,firstname,lastname,friends,forks,wishlist,os&conditions=email='${this.state.email}'`)
+    axios.get(`http://desolate-caverns-97737.herokuapp.com/db/query?password=forkit.co&query=select%20*%20from%20users%20where%20email='${this.state.email}'`)
     .then(resp => {
       if (resp.data.result.length > 0) {
         if (bcrypt.compareSync(this.state.password, resp.data.result[0].password)) {
           userObj = {firstname: resp.data.result[0].firstname, lastname: resp.data.result[0].lastname, email: resp.data.result[0].email, friends: resp.data.result[0].friends, forks: resp.data.result[0].forks, wishlist: resp.data.result[0].wishlist, os: resp.data.result[0].os};
-          // console.log('userObj', userObj);
           this.props.userProfile(userObj);
-          console.log(this.props.userInformation);
-
-          var salt = bcrypt.genSaltSync(10);
-          var token = bcrypt.hashSync(this.state.email, salt);
-
-          axios({
-            method: 'POST',
-            url: 'https://guarded-dawn-44803.herokuapp.com/db/updaterows',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            data: {
-              password: '$BIG_SHAQ102$',
-              tableName: 'users',
-              set: `token='${token}'`,
-              conditions: `email='${this.state.email}'`
-            }
-          })
-          .then(response => {
-            if (response.data.success) {
-            AsyncStorage.setItem('email', JSON.stringify({
-              email: this.state.email,
-              type: 'regular'
-              }));
-            }
-          })
-          .catch(e => {
-            console.log('ERROR', e);
-          })
+          AsyncStorage.setItem('email', JSON.stringify({
+            email: this.state.email,
+            type: 'regular'
+            }));
           Actions.discover();
         } else {
           Alert.alert('Error', 'We don\'t recognize this combination! Please try again', {text: 'Ok'})

@@ -30,7 +30,6 @@ class Register extends React.Component{
         last: this.state.last,
         password: bcrypt.hashSync(this.state.password, salt)
         }));
-
       Actions.vnumber()
     } else {
       Alert.alert('Oops', 'Some fields are not filled or email is not right!', {text: 'Ok'})

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { scale, verticalScale, moderateScale } from '../scaler.js';
 import Navbar from '../components/Navbar.js';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 class MultiResult extends Component{
   constructor(props) {
